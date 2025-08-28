@@ -141,12 +141,14 @@ body {
 }
 
 .live-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--live);
-  box-shadow: 0 0 0 6px rgba(255, 59, 48, 0.15);
-  display: inline-block
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.45);
+  animation: livePulse 1.6s ease-in-out infinite;
+  will-change: transform, box-shadow;
 }
 
 .divider {
@@ -336,6 +338,29 @@ html.force-dark {
   --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
     0 10px 30px rgba(0, 0, 0, 0.35),
     0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Animated pulsing LIVE dot */
+@keyframes livePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.45);
+  }
+  60% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 12px rgba(255, 59, 48, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+  }
+}
+
+/* Accessibility: disable animation if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
 }
 
 @media (max-width:640px) {
