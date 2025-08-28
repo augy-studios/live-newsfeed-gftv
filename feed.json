@@ -1,0 +1,26 @@
+{
+    "meta": {
+        "title": "GFTV NewsSpot",
+        "timezone": "Asia/Singapore",
+        "updated_at": "2025-08-28T23:00:00+08:00"
+    },
+    "posts": [{
+            "id": "2025-08-28-2300-1",
+            "time": "2025-08-28T23:00:00+08:00",
+            "title": "Good evening! We are live.",
+            "description": "Welcome to our rolling coverage. Expect updates every few minutes as stories develop.",
+            "images": [],
+            "tags": ["status"],
+            "pinned": true
+        },
+        {
+            "id": "2025-08-28-2330-1",
+            "time": "2025-08-28T23:30:00+08:00",
+            "title": "Breaking: Lorem Ipsum Dolor Sit Amet",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. More details to follow.",
+            "images": [],
+            "tags": ["breaking", "singapore"],
+            "pinned": false
+        }
+    ]
+}

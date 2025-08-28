@@ -1,245 +1,295 @@
-const Icons = {
-  trophy: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M7 21h10v-2H7v2Zm5-4a5 5 0 0 0 5-5V5h2a2 2 0 0 1 2 2v1a5 5 0 0 1-4 4.9A7 7 0 0 1 13 17h-2a7 7 0 0 1-4-4.1A5 5 0 0 1 3 8V7a2 2 0 0 1 2-2h2v7a5 5 0 0 0 5 5Zm7-10V7h-2v2.6A3 3 0 0 0 19 7ZM5 9.6V7H3v1a3 3 0 0 0 2 1.6Z"/></svg>`,
-  chart: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 3h2v18H3V3Zm16 6h2v12h-2V9ZM9 13h2v8H9v-8Zm4-10h2v18h-2V3Z"/></svg>`,
-  map: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M15 4.5 9 3 3 4.5v15L9 18l6 1.5 6-1.5v-15L15 6V4.5ZM9 5.3l4 1V18.7l-4-1V5.3ZM5 6.1 7 5.6V17.9L5 18.4V6.1Zm14 11.5-2 .5V5.9l2-.5v12.2Z"/></svg>`,
-  heart: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.3-9.7-8.4A5.6 5.6 0 0 1 12 6a5.6 5.6 0 0 1 9.7 6.6C19.5 16.7 12 21 12 21Z"/></svg>`,
-  clock: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 22A10 10 0 1 1 22 12 10 10 0 0 1 12 22Zm1-10V7h-2v7h6v-2h-4Z"/></svg>`
-};
+(() => {
+  const $ = (sel, el = document) => el.querySelector(sel);
+  const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 
-const $ = (sel, p = document) => p.querySelector(sel);
-const $$ = (sel, p = document) => Array.from(p.querySelectorAll(sel));
+  const feedEl = $('#feed');
+  const pinnedSection = $('#pinned');
+  const pinnedList = $('#pinnedList');
+  const statusEl = $('#statusText');
+  const tzText = $('#tzText');
+  const updatedText = $('#updatedText');
+  const titleEl = $('#feedTitle');
+  const yearEl = $('#year');
+  const btnPause = $('#btnPause');
+  const btnTheme = $('#btnTheme');
+  const toggleScroll = $('#toggleScroll');
+  const toggleCompact = $('#toggleCompact');
+  const postTpl = $('#postTemplate');
+  const lightbox = $('#lightbox');
+  const lightboxImg = $('#lightboxImg');
+  const lightboxClose = $('#lightboxClose');
 
-const state = {
-  data: {
-    sections: []
-  },
-  tags: new Set(),
-  activeTags: new Set(),
-  q: "",
-};
+  let state = {
+    paused: false,
+    autoscroll: true,
+    compact: false,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    posts: new Map(), // id -> data
+    order: [], // ids in time desc
+    etag: null,
+  };
 
-function icon(name) {
-  return Icons[name] || Icons.chart;
-}
+  yearEl.textContent = new Date().getFullYear();
+  toggleScroll.checked = true;
 
-function tagChip(tag) {
-  const b = document.createElement("button");
-  b.type = "button";
-  b.className = "tag";
-  b.innerHTML = `#${tag} <span class="x" aria-hidden="true">×</span>`;
-  b.setAttribute("aria-pressed", state.activeTags.has(tag) ? "true" : "false");
-  b.addEventListener("click", () => {
-    if (state.activeTags.has(tag)) state.activeTags.delete(tag);
-    else state.activeTags.add(tag);
-    render();
+  // THEME
+  const getTheme = () => localStorage.getItem('theme') || 'auto';
+  const setTheme = (t) => {
+    localStorage.setItem('theme', t);
+    applyTheme();
+  };
+  const applyTheme = () => {
+    const t = getTheme();
+    document.documentElement.dataset.theme = t;
+    if (t === 'dark') document.documentElement.classList.add('force-dark');
+    else document.documentElement.classList.remove('force-dark');
+  };
+  btnTheme.addEventListener('click', () => {
+    const current = getTheme();
+    const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+    setTheme(next);
+    btnTheme.textContent = `Theme: ${next}`;
   });
-  return b;
-}
+  applyTheme();
+  btnTheme.textContent = `Theme: ${getTheme()}`;
 
-function card(item) {
-  const a = document.createElement("article");
-  a.className = "card";
-  a.tabIndex = 0;
-  a.setAttribute("role", "link");
-  a.setAttribute("aria-label", item.title);
-  a.addEventListener("click", () => window.location.href = item.href);
-  a.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
+  // COMPACT
+  toggleCompact.addEventListener('change', e => {
+    state.compact = !!e.target.checked;
+    document.body.classList.toggle('compact', state.compact);
+  });
+
+  // AUTOSCROLL
+  toggleScroll.addEventListener('change', e => state.autoscroll = !!e.target.checked);
+
+  // PAUSE/RESUME
+  btnPause.addEventListener('click', () => {
+    state.paused = !state.paused;
+    btnPause.textContent = state.paused ? 'Resume' : 'Pause';
+    btnPause.setAttribute('aria-pressed', String(state.paused));
+    status(`Auto-refresh ${state.paused ? 'paused' : 'resumed'}.`, 'ok');
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {
       e.preventDefault();
-      window.location.href = item.href;
+      btnPause.click();
+    }
+    if (e.key.toLowerCase() === 't') {
+      btnTheme.click();
     }
   });
 
-  const accent = item.accent || "var(--accent)";
-  a.innerHTML = `
-    <div class="icon" style="color:${accent}">${icon(item.icon)}</div>
-    <h3>${item.title}</h3>
-    <p>${item.desc || ""}</p>
-    <div class="meta">
-      ${item.new ? '<span class="badge">New</span>' : ''}
-      ${(item.tags||[]).slice(0,3).map(t=>`<span class="tag-sm">#${t}</span>`).join("")}
-    </div>
-  `;
-  return a;
-}
-
-function normalize(str) {
-  return (str || "").toLowerCase();
-}
-
-function filterItems(items) {
-  const q = normalize(state.q);
-  const hasTags = state.activeTags.size > 0;
-  return items.filter(it => {
-    const text = `${it.title} ${it.desc} ${(it.tags||[]).join(" ")}`.toLowerCase();
-    const matchesQ = q ? text.includes(q) : true;
-    const matchesTags = hasTags ? (it.tags || []).some(t => state.activeTags.has(t)) : true;
-    return matchesQ && matchesTags;
+  // Lightbox
+  const openLightbox = (src, alt) => {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.showModal();
+  };
+  lightboxClose.addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.close();
   });
-}
 
-function collectTags(data) {
-  state.tags = new Set();
-  for (const s of data.sections || []) {
-    for (const it of s.items || [])(it.tags || []).forEach(t => state.tags.add(t));
-  }
-}
+  const fmtAbs = (d, tz) => new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: tz
+  }).format(d);
 
-function render() {
-  const container = $("#sections");
-  container.innerHTML = "";
-
-  let totalCount = 0;
-  for (const section of state.data.sections || []) {
-    const items = filterItems(section.items || []);
-    totalCount += items.length;
-
-    if (items.length === 0) continue;
-
-    const sec = document.createElement("div");
-    sec.className = "section";
-    sec.innerHTML = `<h2>${section.title}</h2>`;
-
-    const grid = document.createElement("div");
-    grid.className = "grid";
-    items.forEach(it => grid.appendChild(card(it)));
-
-    sec.appendChild(grid);
-    container.appendChild(sec);
-  }
-
-  $("#empty").classList.toggle("hidden", totalCount !== 0);
-}
-
-async function loadData() {
-  try {
-    const res = await fetch("/assets/pages.json", {
-      cache: "no-store"
+  const fmtRel = (d) => {
+    const rtf = new Intl.RelativeTimeFormat(undefined, {
+      numeric: 'auto'
     });
-    if (!res.ok) throw new Error("Failed to load pages.json");
-    state.data = await res.json();
-  } catch (err) {
-    console.warn(err);
-    // Fallback demo data to keep the page usable if pages.json is missing
-    state.data = {
-      sections: [{
-          title: "Popular",
-          items: [{
-              id: "leaders",
-              title: "Global Leaderboards",
-              href: "leaderboards/index.html",
-              desc: "Top players, by game & season.",
-              icon: "trophy",
-              tags: ["global", "live", "rankings"],
-              new: true
-            },
-            {
-              id: "heatmap",
-              title: "Live Heatmap",
-              href: "heatmap/index.html",
-              desc: "Real‑time activity across regions.",
-              icon: "map",
-              tags: ["live", "regions"],
-              accent: "#06b6d4"
-            },
-            {
-              id: "sentiment",
-              title: "Community Sentiment",
-              href: "sentiment/index.html",
-              desc: "Social chatter trendlines.",
-              icon: "heart",
-              tags: ["social", "trend"]
-            }
-          ]
-        },
-        {
-          title: "By Category",
-          items: [{
-              id: "attendance",
-              title: "Attendance Trends",
-              href: "attendance/index.html",
-              desc: "Multi‑year event growth.",
-              icon: "chart",
-              tags: ["events", "history"],
-              accent: "#f43f5e"
-            },
-            {
-              id: "timelines",
-              title: "Timelines & Milestones",
-              href: "timelines/index.html",
-              desc: "Roadmaps and rollouts.",
-              icon: "clock",
-              tags: ["planning", "org"]
-            }
-          ]
-        }
-      ]
-    };
-  }
-  collectTags(state.data);
-  renderTags();
-  render();
-}
-
-function renderTags() {
-  const wrap = $("#tags");
-  wrap.innerHTML = "";
-  Array.from(state.tags).sort((a, b) => a.localeCompare(b)).forEach(t => wrap.appendChild(tagChip(t)));
-}
-
-function initSearch() {
-  const input = $("#search");
-  input.addEventListener("input", (e) => {
-    state.q = e.target.value;
-    render();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "/" && document.activeElement !== input) {
-      e.preventDefault();
-      input.focus();
+    const diff = (Date.now() - d.getTime()) / 1000; // seconds
+    const abs = Math.abs(diff);
+    const units = [
+      ['year', 31536000],
+      ['month', 2592000],
+      ['week', 604800],
+      ['day', 86400],
+      ['hour', 3600],
+      ['minute', 60],
+      ['second', 1]
+    ];
+    for (const [u, s] of units) {
+      if (abs >= s || u === 'second') {
+        return rtf.format(Math.round(-diff / s), u);
+      }
     }
-  });
-}
-
-function initTheme() {
-  const btn = $("#themeToggle");
-  const key = "fsh-theme";
-
-  const updateButton = (t) => {
-    btn.textContent = t === "light" ? "☀️" : t === "dark" ? "🌙" : "🖥️";
-    btn.setAttribute("aria-label", `Theme: ${t}`);
   };
 
-  const apply = (t) => {
-    document.documentElement.dataset.theme = t; // "dark" | "light" | "auto"
-    updateButton(t);
-  };
+  function status(text, cls = '') {
+    statusEl.textContent = text;
+    statusEl.className = cls ? cls : '';
+  }
 
-  const toggle = () => {
-    const cur = localStorage.getItem(key) || "auto";
-    const next = cur === "dark" ? "light" : cur === "light" ? "auto" : "dark";
-    localStorage.setItem(key, next);
-    apply(next);
-  };
+  async function fetchFeed() {
+    if (state.paused) return;
+    try {
+      const res = await fetch(window.FEED_PATH, {
+        cache: 'no-store'
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      applyFeed(data);
+      status('Connected', 'ok');
+    } catch (err) {
+      console.error(err);
+      status(`Fetch error: ${err.message}`, 'err');
+    }
+  }
 
-  apply(localStorage.getItem(key) || "auto");
-  btn.addEventListener("click", toggle);
-}
+  function applyFeed(data) {
+    const tz = window.TIMEZONE_OVERRIDE || data?.meta?.timezone || state.tz;
+    state.tz = tz;
+    tzText.textContent = tz;
+    titleEl.textContent = data?.meta?.title || 'Live Feed';
 
-function initMisc() {
-  $("#year").textContent = new Date().getFullYear();
-  $("#clearFilters").addEventListener("click", () => {
-    state.activeTags.clear();
-    state.q = "";
-    $("#search").value = "";
-    renderTags();
-    render();
-  });
-}
+    if (data?.meta?.updated_at) {
+      const d = new Date(data.meta.updated_at);
+      updatedText.textContent = `${fmtAbs(d, tz)} (${fmtRel(d)})`;
+    }
 
-window.addEventListener("DOMContentLoaded", () => {
-  initSearch();
-  initTheme();
-  initMisc();
-  loadData();
-});
+    const posts = Array.isArray(data?.posts) ? data.posts.slice() : [];
+    // Sort newest first by time
+    posts.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+    // Build index and render only new/changed
+    const existing = new Set(state.order);
+    const newOrder = [];
+
+    const pinned = [];
+
+    for (const p of posts) {
+      const id = p.id || `${p.time}-${(p.title||'').slice(0,24)}`;
+      newOrder.push(id);
+      const isPinned = !!p.pinned;
+      const prev = state.posts.get(id);
+      state.posts.set(id, p);
+      if (!prev) {
+        renderPost(id, p, isPinned);
+      } else if (JSON.stringify(prev) !== JSON.stringify(p)) {
+        updatePost(id, p, isPinned);
+      }
+      if (isPinned) pinned.push(id);
+    }
+
+    state.order = newOrder;
+
+    // Reorder DOM to match newOrder (newest on top)
+    for (const id of newOrder.slice().reverse()) {
+      const node = feedEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
+      if (node) feedEl.prepend(node);
+    }
+
+    // Pinned section
+    pinnedSection.hidden = pinned.length === 0;
+    pinnedList.innerHTML = '';
+    for (const id of pinned) {
+      const srcNode = feedEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
+      if (srcNode) pinnedList.appendChild(srcNode.cloneNode(true));
+    }
+
+    // Auto-scroll to top for newest if toggled
+    if (state.autoscroll) window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
+    // Update aria
+    feedEl.setAttribute('aria-busy', 'false');
+  }
+
+  function renderPost(id, p, isPinned) {
+    const node = postTpl.content.firstElementChild.cloneNode(true);
+    node.dataset.id = id;
+    $('.title', node).textContent = p.title || 'Untitled';
+
+    const t = new Date(p.time);
+    const absEl = $('.absolute', node);
+    const relEl = $('.relative', node);
+    absEl.dateTime = t.toISOString();
+    absEl.textContent = fmtAbs(t, state.tz);
+    relEl.textContent = fmtRel(t);
+
+    const descEl = $('.desc', node);
+    descEl.textContent = p.description || '';
+
+    const mediaEl = $('.media', node);
+    mediaEl.innerHTML = '';
+    if (Array.isArray(p.images)) {
+      for (const src of p.images) {
+        const img = new Image();
+        img.src = src;
+        img.alt = p.title || 'News image';
+        img.addEventListener('click', () => openLightbox(src, img.alt));
+        mediaEl.appendChild(img);
+      }
+    }
+
+    const tagsEl = $('.tags', node);
+    tagsEl.innerHTML = '';
+    if (Array.isArray(p.tags)) {
+      for (const tag of p.tags) {
+        const s = document.createElement('span');
+        s.className = 'tag';
+        s.textContent = `#${tag}`;
+        tagsEl.appendChild(s);
+      }
+    }
+
+    feedEl.appendChild(node);
+  }
+
+  function updatePost(id, p) {
+    const node = feedEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
+    if (!node) return renderPost(id, p);
+    $('.title', node).textContent = p.title || 'Untitled';
+
+    const t = new Date(p.time);
+    const absEl = $('.absolute', node);
+    const relEl = $('.relative', node);
+    absEl.dateTime = t.toISOString();
+    absEl.textContent = fmtAbs(t, state.tz);
+    relEl.textContent = fmtRel(t);
+
+    $('.desc', node).textContent = p.description || '';
+
+    const mediaEl = $('.media', node);
+    mediaEl.innerHTML = '';
+    if (Array.isArray(p.images)) {
+      for (const src of p.images) {
+        const img = new Image();
+        img.src = src;
+        img.alt = p.title || 'News image';
+        img.addEventListener('click', () => openLightbox(src, img.alt));
+        mediaEl.appendChild(img);
+      }
+    }
+
+    const tagsEl = $('.tags', node);
+    tagsEl.innerHTML = '';
+    if (Array.isArray(p.tags)) {
+      for (const tag of p.tags) {
+        const s = document.createElement('span');
+        s.className = 'tag';
+        s.textContent = `#${tag}`;
+        tagsEl.appendChild(s);
+      }
+    }
+  }
+
+  // Periodic relative-time refresher
+  setInterval(() => {
+    $$('.card time.absolute').forEach(abs => {
+      const rel = abs.parentElement.querySelector('.relative');
+      if (rel) rel.textContent = fmtRel(new Date(abs.dateTime));
+    });
+  }, 15000);
+
+  // Polling
+  fetchFeed();
+  setInterval(fetchFeed, window.REFRESH_MS);
+})();
