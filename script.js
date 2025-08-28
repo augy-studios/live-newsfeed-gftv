@@ -33,9 +33,9 @@
   toggleScroll.checked = true;
 
   // THEME
-  const getTheme = () => localStorage.getItem('theme') || 'auto';
+  const getTheme = () => localStorage.getItem('livespot-theme') || 'auto';
   const setTheme = (t) => {
-    localStorage.setItem('theme', t);
+    localStorage.setItem('livespot-theme', t);
     applyTheme();
   };
   const applyTheme = () => {

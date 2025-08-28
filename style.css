@@ -37,7 +37,7 @@
 }
 
 :root {
-  --bg: #0b0c10;
+  --bg: #262729;
   --panel: #111318;
   --elev: #151922;
   --text: #e6e7eb;
@@ -55,7 +55,7 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #f7f8fb;
+    --bg: #f6f7f9;
     --panel: #ffffff;
     --elev: #ffffff;
     --text: #0d1117;
@@ -79,7 +79,8 @@ body {
 
 body {
   margin: 0;
-  background: #262729;
+  /* use the theme variable so toggling works */
+  background: var(--bg);
   color: var(--text);
   font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
@@ -308,6 +309,33 @@ body {
 
 #statusText.err {
   color: color-mix(in lab, #dc2626 80%, var(--text))
+}
+
+html[data-theme="light"] {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --elev: #ffffff;
+  --text: #0d1117;
+  --muted: #6b7280;
+  --primary: #fedc00;
+  --accent: #ffe647;
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.04) inset,
+    0 10px 25px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="dark"],
+html.force-dark {
+  --bg: #262729;
+  --panel: #111318;
+  --elev: #151922;
+  --text: #e6e7eb;
+  --muted: #9aa3b2;
+  --primary: #fedc00;
+  --accent: #ffe647;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width:640px) {
