@@ -1,6 +1,6 @@
 {
-    "name": "GFTV Live News Feed",
-    "short_name": "GFTV Live News Feed",
+    "name": "GFTV NewsSpot Live",
+    "short_name": "GFTV NewsSpot Live",
     "icons": [{
         "src": "favicon.ico",
         "type": "image/png",
@@ -11,5 +11,5 @@
     "background_color": "#fedc00",
     "display": "standalone",
     "display_override": ["fullscreen", "minimal-ui"],
-    "description": "Save this to access the GFTV Live News Feed website in your home screen!"
+    "description": "Save this to access the GFTV NewsSpot Live website in your home screen!"
 }
