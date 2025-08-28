@@ -229,6 +229,25 @@
       }
     }
 
+    const embedsEl = $('.embeds', node);
+    embedsEl.innerHTML = '';
+    if (p.embeds && typeof p.embeds === 'object') {
+      // YouTube
+      if (Array.isArray(p.embeds.youtube)) {
+        for (const y of p.embeds.youtube) {
+          const id = getYouTubeId(y);
+          if (id) embedsEl.appendChild(makeYouTubeIframe(id));
+        }
+      }
+      // Telegram
+      if (Array.isArray(p.embeds.telegram)) {
+        for (const t of p.embeds.telegram) {
+          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramBlockquote(t));
+        }
+        if (p.embeds.telegram.length) ensureTelegramWidget();
+      }
+    }
+
     const tagsEl = $('.tags', node);
     tagsEl.innerHTML = '';
     if (Array.isArray(p.tags)) {
@@ -241,6 +260,57 @@
     }
 
     feedEl.appendChild(node);
+  }
+
+  function getYouTubeId(input) {
+    if (!input) return null;
+    // Accept raw ID or URL
+    const idLike = String(input).trim();
+    if (/^[\w-]{11}$/.test(idLike)) return idLike;
+    try {
+      const u = new URL(idLike);
+      if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+      if (u.hostname.includes('youtube.com')) {
+        if (u.searchParams.get('v')) return u.searchParams.get('v');
+        const m = u.pathname.match(/\/embed\/([\w-]{11})/);
+        if (m) return m[1];
+      }
+    } catch {}
+    return null;
+  }
+
+  function makeYouTubeIframe(id) {
+    const wrap = document.createElement('div');
+    wrap.className = 'embed-16x9';
+    const iframe = document.createElement('iframe');
+    iframe.loading = 'lazy';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(id)}?rel=0`;
+    wrap.appendChild(iframe);
+    return wrap;
+  }
+
+  function makeTelegramBlockquote(url) {
+    // Telegram official widget parses <blockquote class="telegram-post"><a href="..."></a></blockquote>
+    const bq = document.createElement('blockquote');
+    bq.className = 'telegram-post telegram-embed';
+    bq.setAttribute('data-width', '100%');
+    bq.setAttribute('data-align', 'center');
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = 'View on Telegram';
+    bq.appendChild(a);
+    return bq;
+  }
+
+  function ensureTelegramWidget() {
+    // If the global widget script is present, it will auto-scan the DOM.
+    // Re-injecting the script nudges it to parse newly-added blockquotes too.
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://telegram.org/js/telegram-widget.js?22';
+    document.head.appendChild(s);
   }
 
   function updatePost(id, p) {
@@ -266,6 +336,25 @@
         img.alt = p.title || 'News image';
         img.addEventListener('click', () => openLightbox(src, img.alt));
         mediaEl.appendChild(img);
+      }
+    }
+
+    const embedsEl = $('.embeds', node);
+    embedsEl.innerHTML = '';
+    if (p.embeds && typeof p.embeds === 'object') {
+      // YouTube
+      if (Array.isArray(p.embeds.youtube)) {
+        for (const y of p.embeds.youtube) {
+          const id = getYouTubeId(y);
+          if (id) embedsEl.appendChild(makeYouTubeIframe(id));
+        }
+      }
+      // Telegram
+      if (Array.isArray(p.embeds.telegram)) {
+        for (const t of p.embeds.telegram) {
+          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramBlockquote(t));
+        }
+        if (p.embeds.telegram.length) ensureTelegramWidget();
       }
     }
 

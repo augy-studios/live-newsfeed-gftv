@@ -11,6 +11,10 @@
             "description": "Welcome to our rolling coverage. Expect updates every few minutes as stories develop.",
             "images": [],
             "tags": ["status"],
+            "embeds": {
+                "youtube": ["https://youtu.be/dQw4w9WgXcQ"],
+                "telegram": []
+            },
             "pinned": false
         },
         {
@@ -22,6 +26,10 @@
                 "/images/global-team.png"
             ],
             "tags": ["breaking", "singapore"],
+            "embeds": {
+                "youtube": [],
+                "telegram": []
+            },
             "pinned": false
         }
     ]

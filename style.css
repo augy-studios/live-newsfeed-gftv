@@ -313,6 +313,36 @@ body {
   color: color-mix(in lab, #dc2626 80%, var(--text))
 }
 
+/* Embeds */
+.embeds {
+  margin-top: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.embed-16x9 {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.embed-16x9 iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+.telegram-embed {
+  background: color-mix(in lab, var(--panel) 96%, transparent);
+  border: 1px solid color-mix(in lab, var(--muted) 16%, transparent);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+
 html[data-theme="light"] {
   --bg: #f6f7f9;
   --panel: #ffffff;
