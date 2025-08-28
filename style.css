@@ -401,4 +401,16 @@ html.force-dark {
   .header-controls .btn {
     padding: 6px 10px
   }
+
+  .site-header .container.row.between.center {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .site-header .header-controls {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 }
