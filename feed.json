@@ -18,7 +18,9 @@
             "time": "2025-08-28T23:30:00+08:00",
             "title": "Breaking: Lorem Ipsum Dolor Sit Amet",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. More details to follow.",
-            "images": [],
+            "images": [
+                "/images/global-team.png"
+            ],
             "tags": ["breaking", "singapore"],
             "pinned": false
         }
