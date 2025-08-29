@@ -49,6 +49,7 @@
     const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
     setTheme(next);
     btnTheme.textContent = `Theme: ${next}`;
+    rerenderTelegramEmbeds();
   });
   applyTheme();
   btnTheme.textContent = `Theme: ${getTheme()}`;
@@ -91,6 +92,47 @@
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) lightbox.close();
   });
+
+  // Resolve the effective dark mode from the theme setting
+  function isDarkThemeEffective() {
+    const t = (localStorage.getItem('livespot-theme') || 'auto');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    // auto -> follow system
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  // Re-render all Telegram embeds to the current theme by replacing the <script> tags
+  function rerenderTelegramEmbeds() {
+    const scripts = document.querySelectorAll('.embeds script[data-telegram-post]');
+    for (const old of scripts) {
+      const post = old.getAttribute('data-telegram-post'); // channel/msgId
+      const width = old.getAttribute('data-width') || '100%';
+      const dark = isDarkThemeEffective() ? '1' : '0';
+
+      // Build a fresh script so Telegram re-parses
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://telegram.org/js/telegram-widget.js?22';
+      s.setAttribute('data-telegram-post', post);
+      s.setAttribute('data-width', width);
+      s.setAttribute('data-dark', dark);
+
+      // Replace old script (and its rendered node)
+      old.parentNode.insertBefore(s, old);
+      old.remove();
+    }
+  }
+
+  // If the theme is set to "auto", re-render telegram embeds when the OS theme flips
+  if (window.matchMedia) {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener?.('change', () => {
+      if ((localStorage.getItem('livespot-theme') || 'auto') === 'auto') {
+        rerenderTelegramEmbeds();
+      }
+    });
+  }
 
   const fmtAbs = (d, tz) => new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -294,7 +336,6 @@
   function makeTelegramEmbed(url) {
     try {
       const u = new URL(url);
-      // Expect links like https://t.me/{channel}/{messageId}
       if (u.hostname === "t.me" && u.pathname.split("/").length >= 3) {
         const parts = u.pathname.split("/");
         const channel = parts[1];
@@ -304,13 +345,12 @@
         s.src = "https://telegram.org/js/telegram-widget.js?22";
         s.setAttribute("data-telegram-post", `${channel}/${msgId}`);
         s.setAttribute("data-width", "100%");
-        s.setAttribute("data-dark", "1");   // <- force dark mode
+        s.setAttribute("data-dark", isDarkThemeEffective() ? "1" : "0");
         return s;
       }
     } catch (e) {
       console.warn("Invalid Telegram URL:", url, e);
     }
-    // fallback
     const div = document.createElement("div");
     div.textContent = "Telegram embed failed to load.";
     return div;
