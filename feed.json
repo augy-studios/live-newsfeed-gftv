@@ -18,15 +18,15 @@
             "pinned": false
         },
         {
-            "id": "2025-08-28-2330-1",
-            "time": "2025-08-28T23:30:00+08:00",
-            "title": "Breaking: Lorem Ipsum Dolor Sit Amet",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. More details to follow.",
+            "id": "2025-08-30-0012",
+            "time": "2025-08-30 00:12:45",
+            "title": "StratosFur called for donations to support Okashi Arcade in Houston facing closure.",
+            "description": "美国兽展 StratosFur 呼吁捐款支持面临关门危机的休斯敦 Okashi Arcade。",
             "images": [],
-            "tags": ["breaking", "singapore"],
+            "tags": ["stratosfur"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/GFTVFurryNews/7041"]
+                "telegram": ["https://t.me/StratosFurOfficial/356"]
             },
             "pinned": false
         }
