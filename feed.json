@@ -68,6 +68,19 @@
                 "telegram": ["https://t.me/anthroweekendutah/574"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0400",
+            "time": "2025-08-30 04:00:00",
+            "title": "Frostbite Weekend 2025 announced December 11–14 with main event VORTEX at The Crocodile.",
+            "description": "美国兽展 Frostbite Weekend 2025 将于 12 月 11–14 日举行，主活动 VORTEX 于 The Crocodile 举办。",
+            "images": [],
+            "tags": ["fetch-nw"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/FetchNW/300?single"]
+            },
+            "pinned": false
         }
     ]
 }
