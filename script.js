@@ -29,6 +29,8 @@
     etag: null,
   };
 
+  let wakeTimer = null; // fires when the next scheduled (future) post becomes visible
+
   yearEl.textContent = new Date().getFullYear();
   toggleScroll.checked = true;
 
@@ -194,7 +196,36 @@
       updatedText.textContent = `${fmtAbs(d, tz)} (${fmtRel(d)})`;
     }
 
-    const posts = Array.isArray(data?.posts) ? data.posts.slice() : [];
+    // hide future posts, and find the earliest upcoming time
+    const now = Date.now();
+    const rawPosts = Array.isArray(data?.posts) ? data.posts.slice() : [];
+    let nextUnlock = Infinity; // ms timestamp of the soonest future post
+
+    // keep only posts whose time <= now; track the soonest future post time
+    const posts = rawPosts.filter(p => {
+      const t = new Date(p.time).getTime();
+      if (!isFinite(t)) return true; // if bad/missing time, show it
+      if (t > now) { // scheduled for the future
+        if (t < nextUnlock) nextUnlock = t; // track earliest future
+        return false; // hide for now
+      }
+      return true; // already due → show
+    });
+
+    // (re)schedule a wake-up fetch exactly when the next future post should appear
+    if (isFinite(nextUnlock)) {
+      if (wakeTimer) clearTimeout(wakeTimer);
+      const delay = Math.max(0, nextUnlock - Date.now() + 500); // +0.5s cushion
+      wakeTimer = setTimeout(() => {
+        wakeTimer = null;
+        fetchFeed();
+      }, delay);
+
+      // surface status so editors know when the next one hits
+      const nextDate = new Date(nextUnlock);
+      status(`Next scheduled post: ${fmtAbs(nextDate, state.tz)} (${fmtRel(nextDate)})`);
+    }
+
     // Sort newest first by time
     posts.sort((a, b) => new Date(b.time) - new Date(a.time));
 
