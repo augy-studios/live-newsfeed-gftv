@@ -13,7 +13,8 @@
             "tags": ["status"],
             "embeds": {
                 "youtube": ["https://youtu.be/dQw4w9WgXcQ"],
-                "telegram": []
+                "telegram": [],
+                "links": []
             },
             "pinned": false
         },
@@ -26,7 +27,8 @@
             "tags": ["stratosfur"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/StratosFurOfficial/356"]
+                "telegram": ["https://t.me/StratosFurOfficial/356"],
+                "links": []
             },
             "pinned": false
         },
@@ -39,7 +41,8 @@
             "tags": ["les-furfurieux"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/furfurieuxnews/265"]
+                "telegram": ["https://t.me/furfurieuxnews/265"],
+                "links": []
             },
             "pinned": false
         },
@@ -52,7 +55,8 @@
             "tags": ["texas-furry-fiesta"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/TexasFurryFiesta/909"]
+                "telegram": ["https://t.me/TexasFurryFiesta/909"],
+                "links": []
             },
             "pinned": false
         },
@@ -65,7 +69,8 @@
             "tags": ["anthro-weekend-utah"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/anthroweekendutah/574"]
+                "telegram": ["https://t.me/anthroweekendutah/574"],
+                "links": []
             },
             "pinned": false
         },
@@ -78,7 +83,8 @@
             "tags": ["fetch-nw"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/FetchNW/300?single"]
+                "telegram": ["https://t.me/FetchNW/300?single"],
+                "links": []
             },
             "pinned": false
         },
@@ -91,7 +97,8 @@
             "tags": ["nordic-fuzz-con"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/nordicfuzzcon/1154"]
+                "telegram": ["https://t.me/nordicfuzzcon/1154"],
+                "links": []
             },
             "pinned": false
         },
@@ -104,7 +111,8 @@
             "tags": ["campfire-tails"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/CFTannouncements/69"]
+                "telegram": ["https://t.me/CFTannouncements/69"],
+                "links": []
             },
             "pinned": false
         },
@@ -117,7 +125,8 @@
             "tags": ["kraz"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/miniconakreslicisraz/671"]
+                "telegram": ["https://t.me/miniconakreslicisraz/671"],
+                "links": []
             },
             "pinned": false
         },
@@ -130,7 +139,8 @@
             "tags": ["japan-meeting-of-furries"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/jmof_official/411"]
+                "telegram": ["https://t.me/jmof_official/411"],
+                "links": []
             },
             "pinned": false
         },
@@ -143,7 +153,8 @@
             "tags": ["japan-meeting-of-furries"],
             "embeds": {
                 "youtube": [],
-                "telegram": ["https://t.me/jmof_official/412"]
+                "telegram": ["https://t.me/jmof_official/412"],
+                "links": []
             },
             "pinned": false
         }

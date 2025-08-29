@@ -136,6 +136,97 @@
     });
   }
 
+  // Twitter embed support
+  function extractTweetId(u) {
+    // match /status/123... or /i/status/123...
+    const m = u.pathname.match(/\/(?:i\/)?status\/(\d+)/);
+    return m ? m[1] : null;
+  }
+
+  function makeFXTwitterIframe(url) {
+    // Accepts any https://fxtwitter.com/... URL with a status ID
+    try {
+      const u = new URL(url);
+      const id = extractTweetId(u);
+      if (!id) return null;
+      const wrap = document.createElement('div');
+      wrap.className = 'embed-16x9'; // keeps it responsive; tweets are tall but this gives a clean container
+      const iframe = document.createElement('iframe');
+      iframe.loading = 'lazy';
+      iframe.allowFullscreen = false;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.src = `https://fxtwitter.com/i/status/${encodeURIComponent(id)}?embed=1`;
+      iframe.style.border = '0';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      wrap.appendChild(iframe);
+      return wrap;
+    } catch {
+      return null;
+    }
+  }
+
+  function makeFixupXIframe(url) {
+    // Accepts https://fixupx.com/... URL with a status ID
+    try {
+      const u = new URL(url);
+      const id = extractTweetId(u);
+      if (!id) return null;
+      const wrap = document.createElement('div');
+      wrap.className = 'embed-16x9';
+      const iframe = document.createElement('iframe');
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.src = `https://fixupx.com/i/status/${encodeURIComponent(id)}?embed=1`;
+      iframe.style.border = '0';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      wrap.appendChild(iframe);
+      return wrap;
+    } catch {
+      return null;
+    }
+  }
+
+  // BlueSky Embed Support
+  function makeFXBskyIframe(url) {
+    // Accepts https://fxbsky.app/profile/{handle|did}/post/{rkey}
+    // We route to the official Bluesky embed service which supports iframes well.
+    try {
+      const u = new URL(url);
+      // Repoint host to bsky.app (same path) for canonical embed
+      const bskyUrl = `https://bsky.app${u.pathname}`;
+      const iframe = document.createElement('iframe');
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.src = `https://embed.bsky.app/?url=${encodeURIComponent(bskyUrl)}`;
+      iframe.style.border = '0';
+      iframe.style.width = '100%';
+      iframe.style.height = '350px'; // Bluesky autosizing is limited cross-origin; fixed height is reliable
+      iframe.setAttribute('title', 'Bluesky post');
+      return iframe;
+    } catch {
+      return null;
+    }
+  }
+
+  function makeSocialEmbed(url) {
+    try {
+      const u = new URL(url);
+      const host = u.hostname.replace(/^www\./, '').toLowerCase();
+      if (host === 'fxtwitter.com') {
+        return makeFXTwitterIframe(url);
+      }
+      if (host === 'fixupx.com') {
+        return makeFixupXIframe(url);
+      }
+      if (host === 'fxbsky.app') {
+        return makeFXBskyIframe(url);
+      }
+    } catch {}
+    return null; // let caller decide fallback
+  }
+
   const fmtAbs = (d, tz) => new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short',
@@ -318,6 +409,24 @@
           if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramEmbed(t));
         }
         if (p.embeds.telegram.length) ensureTelegramWidget();
+      }
+      // fxtwitter, fixupx, fxbsky
+      if (p.embeds && Array.isArray(p.embeds.links)) {
+        for (const link of p.embeds.links) {
+          if (typeof link !== 'string') continue;
+          const node = makeSocialEmbed(link);
+          if (node) {
+            embedsEl.appendChild(node);
+          } else {
+            // graceful fallback: clickable link
+            const a = document.createElement('a');
+            a.href = link;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = link;
+            embedsEl.appendChild(a);
+          }
+        }
       }
     }
 
