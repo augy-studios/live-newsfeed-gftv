@@ -171,6 +171,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1100",
+            "time": "2025-08-30T11:00:00+08:00",
+            "title": "Furry Down Under 2026 tickets sold out; waiting list to open soon.",
+            "description": "澳大利亚兽展 Furry Down Under 2026 门票售罄；候补名单即将开放。",
+            "images": [],
+            "tags": ["furry-down-under"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/FurryDownUnderA/1495"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
