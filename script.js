@@ -304,6 +304,7 @@
         s.src = "https://telegram.org/js/telegram-widget.js?22";
         s.setAttribute("data-telegram-post", `${channel}/${msgId}`);
         s.setAttribute("data-width", "100%");
+        s.setAttribute("data-dark", "1");   // <- force dark mode
         return s;
       }
     } catch (e) {
