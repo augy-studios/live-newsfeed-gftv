@@ -120,6 +120,19 @@
                 "telegram": ["https://t.me/miniconakreslicisraz/671"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0800",
+            "time": "2025-08-30 08:00:00",
+            "title": "Japan Meeting of Furries 2026 opened event applications for participants.",
+            "description": "日本兽展 Japan Meeting of Furries 2026 已开放活动申请。",
+            "images": [],
+            "tags": ["japan-meeting-of-furries"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/jmof_official/411"]
+            },
+            "pinned": false
         }
     ]
 }
