@@ -157,6 +157,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1000",
+            "time": "2025-08-30T10:00:00+08:00",
+            "title": "CanFURence 2025 mourned the passing of Cedar, a blind baby moose from Holly's Haven Wildlife Rescue.",
+            "description": "加拿大兽展 CanFURence 2025 哀悼 Holly's Haven Wildlife Rescue 的失明小麋鹿 Cedar 之逝世。",
+            "images": [],
+            "tags": ["canfurence"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/canfurence/623"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
