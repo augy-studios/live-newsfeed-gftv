@@ -133,6 +133,19 @@
                 "telegram": ["https://t.me/jmof_official/411"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0900",
+            "time": "2025-08-30 09:00:00",
+            "title": "Japan Meeting of Furries 2026 published registration details; pre-registration opens September 6.",
+            "description": "日本兽展 Japan Meeting of Furries 2026 公布注册详情；预注册将于 9 月 6 日开启。",
+            "images": [],
+            "tags": ["japan-meeting-of-furries"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/jmof_official/412"]
+            },
+            "pinned": false
         }
     ]
 }
