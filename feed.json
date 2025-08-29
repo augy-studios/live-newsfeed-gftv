@@ -241,6 +241,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1600",
+            "time": "2025-08-30T16:00:00+08:00",
+            "title": "Eufuria 2026 opened staff applications for multiple leadership and creative roles.",
+            "description": "葡萄牙兽展 Eufuria 2026 已开放多个管理及创意岗位的工作人员报名。",
+            "images": [],
+            "tags": ["eufuria"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/EufuriaCon/497"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
