@@ -29,6 +29,19 @@
                 "telegram": ["https://t.me/StratosFurOfficial/356"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0100",
+            "time": "2025-08-30 01:00:00",
+            "title": "Les Furfurieux 2025 opened artist alley applications, closing September 7.",
+            "description": "法国兽展 Les Furfurieux 2025 已开放艺术区报名，截止至 9 月 7 日。",
+            "images": [],
+            "tags": ["les-furfurieux"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/furfurieuxnews/265"]
+            },
+            "pinned": false
         }
     ]
 }
