@@ -242,7 +242,7 @@
       // Telegram
       if (Array.isArray(p.embeds.telegram)) {
         for (const t of p.embeds.telegram) {
-          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramBlockquote(t));
+          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramEmbed(t));
         }
         if (p.embeds.telegram.length) ensureTelegramWidget();
       }
@@ -291,17 +291,28 @@
     return wrap;
   }
 
-  function makeTelegramBlockquote(url) {
-    // Telegram official widget parses <blockquote class="telegram-post"><a href="..."></a></blockquote>
-    const bq = document.createElement('blockquote');
-    bq.className = 'telegram-post telegram-embed';
-    bq.setAttribute('data-width', '100%');
-    bq.setAttribute('data-align', 'center');
-    const a = document.createElement('a');
-    a.href = url;
-    a.textContent = 'View on Telegram';
-    bq.appendChild(a);
-    return bq;
+  function makeTelegramEmbed(url) {
+    try {
+      const u = new URL(url);
+      // Expect links like https://t.me/{channel}/{messageId}
+      if (u.hostname === "t.me" && u.pathname.split("/").length >= 3) {
+        const parts = u.pathname.split("/");
+        const channel = parts[1];
+        const msgId = parts[2];
+        const s = document.createElement("script");
+        s.async = true;
+        s.src = "https://telegram.org/js/telegram-widget.js?22";
+        s.setAttribute("data-telegram-post", `${channel}/${msgId}`);
+        s.setAttribute("data-width", "100%");
+        return s;
+      }
+    } catch (e) {
+      console.warn("Invalid Telegram URL:", url, e);
+    }
+    // fallback
+    const div = document.createElement("div");
+    div.textContent = "Telegram embed failed to load.";
+    return div;
   }
 
   function ensureTelegramWidget() {
@@ -352,7 +363,7 @@
       // Telegram
       if (Array.isArray(p.embeds.telegram)) {
         for (const t of p.embeds.telegram) {
-          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramBlockquote(t));
+          if (t && typeof t === 'string') embedsEl.appendChild(makeTelegramEmbed(t));
         }
         if (p.embeds.telegram.length) ensureTelegramWidget();
       }
