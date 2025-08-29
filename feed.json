@@ -199,6 +199,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1300",
+            "time": "2025-08-30T13:00:00+08:00",
+            "title": "Unfurgettable Taiwan Furry Gathering 2025 recap video premiered on August 24.",
+            "description": "台湾兽展 Unfurgettable Taiwan Furry Gathering 2025 官方回顾影片已于 8 月 24 日首播。",
+            "images": [],
+            "tags": ["utfg-tw"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/utfgtw/67"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
