@@ -42,6 +42,32 @@
                 "telegram": ["https://t.me/furfurieuxnews/265"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0200",
+            "time": "2025-08-30 02:00:00",
+            "title": "Texas Furry Fiesta opened guest of honour nominations for 2027.",
+            "description": "美国兽展 Texas Furry Fiesta 已开放 2027 年特邀嘉宾提名。",
+            "images": [],
+            "tags": ["texas-furry-fiesta"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/TexasFurryFiesta/909"]
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-0300",
+            "time": "2025-08-30 03:00:00",
+            "title": "Anthro Weekend Utah thanked attendees for 2025 survey feedback and announced gift card winners.",
+            "description": "美国兽展 Anthro Weekend Utah 感谢参与 2025 调查的与会者并公布礼品卡获奖者。",
+            "images": [],
+            "tags": ["anthro-weekend-utah"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/anthroweekendutah/574"]
+            },
+            "pinned": false
         }
     ]
 }
