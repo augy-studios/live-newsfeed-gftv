@@ -107,6 +107,19 @@
                 "telegram": ["https://t.me/CFTannouncements/69"]
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-0700",
+            "time": "2025-08-30 07:00:00",
+            "title": "KRAZ 2026 registrations to open in January.",
+            "description": "捷克兽展 KRAZ 2026 将于一月开启注册。",
+            "images": [],
+            "tags": ["kraz"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/miniconakreslicisraz/671"]
+            },
+            "pinned": false
         }
     ]
 }
