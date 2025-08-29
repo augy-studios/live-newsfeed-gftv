@@ -185,6 +185,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1200",
+            "time": "2025-08-30T12:00:00+08:00",
+            "title": "Infurnity 2025 announced limited free fursuiter numbered badges at Furtopia.",
+            "description": "台湾兽展 Infurnity 2025 宣布将在 Furtopia 限量发放免费兽装编号挂牌。",
+            "images": [],
+            "tags": ["infurnity"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/infurnity/848"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
