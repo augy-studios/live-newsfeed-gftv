@@ -213,6 +213,20 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1400",
+            "time": "2025-08-30T14:00:00+08:00",
+            "title": "Furvana announced Urban Animal Roastery to serve coffee and drinks each morning.",
+            "description": "美国兽展 Furvana 宣布 Urban Animal Roastery 将于每天早晨提供咖啡与饮品。",
+            "images": [],
+            "tags": ["furvana"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/FurvanaAnnouncements/56"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
