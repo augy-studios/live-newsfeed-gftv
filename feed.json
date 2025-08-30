@@ -255,6 +255,48 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-1700",
+            "time": "2025-08-30T17:00:00+08:00",
+            "title": "Brasil FurFest 2025 released official theme animations featuring Bombom and Maumau.",
+            "description": "巴西兽展 Brasil FurFest 2025 发布了主题动画，主角为 Bombom 和 Maumau。",
+            "images": [],
+            "tags": ["brasil-furfest"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/bffnoticias/1435"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-1800",
+            "time": "2025-08-30T18:00:00+08:00",
+            "title": "Fauntastic released a short survey on attendee meal plans during the convention.",
+            "description": "法国兽展 Fauntastic 发布简短调查，了解与会者在大会期间的用餐安排。",
+            "images": [],
+            "tags": ["fauntastic"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/FauntasticCon/847"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-1900",
+            "time": "2025-08-30T19:00:00+08:00",
+            "title": "Western Pennsylvania Furry Weekend reopened super sponsor registration until August 31.",
+            "description": "美国兽展 Western Pennsylvania Furry Weekend 重新开放超级赞助注册，截止至 8 月 31 日。",
+            "images": [],
+            "tags": ["wpafw"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/wpafwofficial/841"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
