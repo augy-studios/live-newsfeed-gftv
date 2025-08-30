@@ -297,6 +297,132 @@
                 "links": []
             },
             "pinned": false
+        },
+        {
+            "id": "2025-08-30-2000",
+            "time": "2025-08-30T20:00:00+08:00",
+            "title": "Melbourne Furcon 2026 detailed vendor event applications opening from August to September.",
+            "description": "澳大利亚兽展 Melbourne Furcon 2026 公布摊主活动申请时间表，将于 8 月至 9 月开放。",
+            "images": [],
+            "tags": ["melbourne-furcon"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/announceMFE/394"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-2100",
+            "time": "2025-08-30T21:00:00+08:00",
+            "title": "Melbourne Furcon 2026 announced SunsetScorpion and SnappaKappa as guests of honour.",
+            "description": "澳大利亚兽展 Melbourne Furcon 2026 宣布 SunsetScorpion 与 SnappaKappa 为特邀嘉宾。",
+            "images": [],
+            "tags": ["melbourne-furcon"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/announceMFE/396"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-2200",
+            "time": "2025-08-30T22:00:00+08:00",
+            "title": "Melbourne Furcon 2026 opened Dealers Den applications until September 8.",
+            "description": "澳大利亚兽展 Melbourne Furcon 2026 已开放贩售区申请，截止至 9 月 8 日。",
+            "images": [],
+            "tags": ["melbourne-furcon"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/announceMFE/398"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-30-2300",
+            "time": "2025-08-30T23:00:00+08:00",
+            "title": "Las Vegas Fur Con reached 1,000 registrations for upcoming event.",
+            "description": "美国兽展 Las Vegas Fur Con 注册人数已达 1000。",
+            "images": [],
+            "tags": ["lvfc"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/LasVegasFurCon/1130"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-31-0000",
+            "time": "2025-08-31T00:00:00+08:00",
+            "title": "Las Vegas Fur Con opened volunteer applications with multiple perks and tiers.",
+            "description": "美国兽展 Las Vegas Fur Con 已开放志愿者报名，并提供不同级别福利。",
+            "images": [],
+            "tags": ["lvfc"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/LasVegasFurCon/1133"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-31-0100",
+            "time": "2025-08-31T01:00:00+08:00",
+            "title": "Las Vegas Fur Con opened staff and recruit applications with hourly benefits.",
+            "description": "美国兽展 Las Vegas Fur Con 已开放工作人员及助理报名，并提供时数福利。",
+            "images": [],
+            "tags": ["lvfc"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/LasVegasFurCon/1134"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-31-0200",
+            "time": "2025-08-31T02:00:00+08:00",
+            "title": "Gateway Furmeet expanded hotel room block and advised attendees to review reservations.",
+            "description": "美国兽展 Gateway Furmeet 扩展酒店房间预订，并提醒与会者检查预订情况。",
+            "images": [],
+            "tags": ["gfm"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/GFM_Alerts/141"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-31-0300",
+            "time": "2025-08-31T03:00:00+08:00",
+            "title": "Gateway Furmeet reminded attendees of preliminary dance competition event and sign-up form.",
+            "description": "美国兽展 Gateway Furmeet 提醒与会者舞蹈比赛预赛及报名表已开放。",
+            "images": [],
+            "tags": ["gfm"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/GFM_Alerts/142"],
+                "links": []
+            },
+            "pinned": false
+        },
+        {
+            "id": "2025-08-31-0400",
+            "time": "2025-08-31T04:00:00+08:00",
+            "title": "Gateway Furmeet 2025 schedule released on Venvi app.",
+            "description": "美国兽展 Gateway Furmeet 2025 日程已在 Venvi 应用上线。",
+            "images": [],
+            "tags": ["gfm"],
+            "embeds": {
+                "youtube": [],
+                "telegram": ["https://t.me/GFM_Alerts/143"],
+                "links": []
+            },
+            "pinned": false
         }
     ]
 }
